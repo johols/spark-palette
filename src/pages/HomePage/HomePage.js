@@ -30,7 +30,7 @@ class HomePage extends Component {
           <Container text>
             <Header
               as='h1'
-              content='Plannera din laddning'
+              content='Planera din laddning'
               inverted
               style={{ fontSize: '4em', fontWeight: 'normal', marginBottom: '1em', marginTop: '2em' }}
             />
