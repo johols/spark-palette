@@ -1,0 +1,16 @@
+/*override semantic-ui styles to remove grey border around menu*/
+.ui.secondary.inverted.pointing.menu{
+    border: none;
+  }
+  .ui.secondary.inverted.pointing.menu .item:hover {
+    /*font-weight: bold;*/
+    color: whitesmoke !important;
+    /*background-color: white !important;*/
+  }
+  
+  .ui.secondary.inverted.pointing.menu .active.item {
+    /*font-weight: bold;*/
+  }
+  
+  /*FireFox shows a dotted border on menu items. This removes it..*/
+  a { outline: none!important; }

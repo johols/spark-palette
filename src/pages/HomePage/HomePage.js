@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import './App.css';
-import herobackgroundImg from '../../images/herobackground.png';
+import sparkpaletteImg from '../../images/sparkpalette_white.png';
+import sparkpaletteThinImg from '../../images/palette_thin_white.png';
 import wiresImg from '../../images/wires.jpg';
 import { Route, Link } from 'react-router-dom';
 import { Button,
@@ -16,13 +17,15 @@ import { Button,
   Menu,
   Segment,
   Visibility } from 'semantic-ui-react';
+import Hero from '../../components/Hero/Hero';
+import texts from '../../config/texts';
 
 
 class HomePage extends Component {
   render() {
     return (
       <div>
-      <Segment
+      {/* <Segment
           inverted
           textAlign='center'
           style={{ minHeight: 100, padding: '1em 0em', backgroundColor: 'black', backgroundImage:  "url(" + wiresImg + "" }}
@@ -45,8 +48,17 @@ class HomePage extends Component {
               <Icon name='right arrow' />
             </Button>
           </Container>
-        </Segment>
-
+        </Segment> */}
+        <Hero  headline={texts.headline} subheadline={texts.subheadline}/>
+      {/* <Segment
+          inverted
+          textAlign='center'
+          style={{ minHeight: 500, padding: '1em 0em', backgroundColor: '#003399', backgroundImage:  "url(" + sparkpaletteImg + "" }}
+          vertical>
+          <Container text>
+          </Container>
+        </Segment> */}
+      
         <Segment style={{ padding: '4em 0em' }} vertical>
 
           <Grid container stackable verticalAlign='middle'>

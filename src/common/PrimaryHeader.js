@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-// import './App.css';
-// import backgroundImg from '../images/headerbackground.png';
-import herobackgroundImg from '../images/herobackground.png';
-import wiresImg from '../images/wires.jpg';
+import './PrimaryHeader.css';
 import { NavLink } from 'react-router-dom';
 import { Container, Menu, Segment } from 'semantic-ui-react';
 
@@ -15,7 +12,7 @@ class PrimaryHeader extends Component {
           <Segment
               inverted
               textAlign='center'
-              style={{ minHeight: 70, padding: '1em 0em', borderBottom: '3px solid #0f418c'}}
+              style={{ minHeight: 70, padding: '1em 0em', backgroundColor: '#3E4458'}}
               vertical>
             <Container>
               <Menu inverted pointing secondary size='large' >
