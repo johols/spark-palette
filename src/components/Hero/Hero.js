@@ -23,9 +23,7 @@ const Hero = props => {
       </Link>
     </Grid.Column >
     <Grid.Column floated='right' width={10}>
-      <Image
-          src={require('../../images/palette_thin_white2.png')}
-        />
+      <Image src={require('../../images/palette_thin_white2.png')} centered/>
     </Grid.Column>
   </Grid.Row>
   {/* <Grid.Row>
