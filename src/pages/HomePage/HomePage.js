@@ -10,14 +10,9 @@ import { Button,
   Grid,
   Header,
   Icon,
-  Card,
-  Item,
-  Image,
-  List,
-  Menu,
-  Segment,
-  Visibility } from 'semantic-ui-react';
+  Segment } from 'semantic-ui-react';
 import Hero from '../../components/Hero/Hero';
+import DataCard from '../../components/DataCard/DataCard';
 import texts from '../../config/texts';
 
 
@@ -74,6 +69,8 @@ class HomePage extends Component {
                 Etiam non quam lacus suspendisse faucibus interdum. 
                 Sed nisi lacus sed viverra tellus in hac habitasse. 
                 </p>
+                <br></br>
+                <DataCard />
               </Container>
               </Grid.Column>
 
