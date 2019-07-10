@@ -11,7 +11,9 @@ export class DataCardContainer extends Component {
   // }
 
   componentDidMount() {
+    this.props.actions.fetchStatistics('stats_GetSumChargerstations', 'SWE');
     this.props.actions.fetchStatistics();
+    this.props.actions.fetchStatistics('stats_GetSumChargerstations', 'NOR');
   }
 
   render() {

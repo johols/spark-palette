@@ -29,7 +29,7 @@ import { FETCH_STATS_LADDSTATION_SWE, FETCH_STATS_LADDSTATION_SWE_FULFILLED, FET
         if(!action.payload.error){
           // newState['statistics'].stationsAmountSwe = [...state.statistics.stationsAmountSwe, action.payload.chargerstations[0].count];
           newState['statistics'].stationsAmountSwe =  action.payload.chargerstations[0].count;
-          newState['statistics'].stats = [...state.statistics.stats, {'attr': 'Laddstationer Sverige', 'value': action.payload.chargerstations[0].count}];
+          newState['statistics'].stats = [...state.statistics.stats, {'attr': 'Laddstationer ' + action.payload.countrycode, 'value': action.payload.chargerstations[0].count}];
         }
         return newState;
     
