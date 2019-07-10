@@ -34,7 +34,7 @@ const DataCard = props => {
 
 DataCard.propTypes = {
   title: PropTypes.string,
-  stats: PropTypes.object
+  stats: PropTypes.array
 };
 
 DataCard.defaultProps = {
