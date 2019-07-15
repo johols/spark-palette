@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import './DataCard.css';
 
-const DataCard = props => {
+export const DataCard = props => {
 
   const renderTableData = (stats) => {
     return stats.map((data, index) => {
@@ -47,5 +47,5 @@ DataCard.defaultProps = {
   { id: '6', attr: 'Task 6', value: '1234' },],
 }
 
-export default DataCard;
+// export default DataCard;
 

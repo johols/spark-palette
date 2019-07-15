@@ -1,27 +1,86 @@
-// import { newMap, createLayer } from '../components/OLMap/olFacade';
 
-export default function reducer(state={}, action) {
+import Map from 'ol/Map';
+import View from 'ol/View';
+// import { MAP_EXTENT, MAP_RESOLUTIONS } from './mapInitializationConstants';
+import layer_Tile from 'ol/layer/Tile';
+import OSM from 'ol/source/OSM';
+import { get as getProjection, fromLonLat } from 'ol/proj';
+import { INIT_MAP, CENTER_CHANGED } from '../actions/mapActions';
+
+const initialState = {
+  maps: {},
+  images: {},
+};
+
+export default function reducer(state = initialState, action = {}) {
   const mapData = state.map;
   const newState = { ...state };
-  newState.map = { ...newState.map};
+  newState.map = { ...newState.map };
   const newMapData = newState.map;
-  
-  switch (action.type){
-    case "CENTER_CHANGED": {
-      console.log('CENTER_CHANGED...', action.payload);
-      return {...state, mapCenter: action.payload}
-    }
-    // case "INIT_MAP": {
-    //   console.log('INIT_MAP action...');
-    //   newState.map = newMap(action.payload);
 
-    //   // return {...state, map: action.payload}
+  switch (action.type) {
+    case INIT_MAP:
+      newState.map = newMap(action.mapId, action.ref);
+      return newState;
+    
+    case CENTER_CHANGED:
+      if (mapData) {
+        newMapData.settings.center = action.center;
+        newMapData.settings.zoom = action.zoom;
+      }
+      return newState;
+
+    // case vectorLayerConstants.ADD_VECTOR_LAYER:
+    //   doAddVectorLayer(mapData, newMapData, action.layerId);
     //   return newState;
-    // }
-    case "INIT": {
-      console.log('INIT action...');
-      return {...state, map: action.payload}
-    }
-    default: return state;
+    
+    // case UPDATE_MARKER:
+    //   doUpdateMarker();
+    //   return newState;
+
+    // case ADD_MARKER:
+    //   doAddMarker(mapData, newMapData, action.layerId, action.coordinates, action.shouldRemoveOldMarkersInLayer);
+    //   return newState;
+      
+    default:
+      return state;
   }
+}  
+
+function newMap(id, ref) {
+  console.log('init map fkn, ref:', ref);
+  const stKilLonLat = [17.391787, 59.881078];
+  const stKilWebMercator = fromLonLat(stKilLonLat);
+  const layer = new layer_Tile({source: new OSM()});
+  
+  const map = new Map({
+    layers: [],
+    view: new View({
+      // extent: MAP_EXTENT,
+      // projection: projection,
+      // center: [564931, 6607899],
+      center: stKilWebMercator,
+      zoom: 6,
+      // resolutions: MAP_RESOLUTIONS,
+    }),
+  });
+  map.setTarget(ref);
+  map.addLayer(layer);
+  return {
+    id: id,
+    map: map,
+    settings: {
+      layers: [],
+    },
+    layers: {},
+    vectorLayers: {},
+    draw: {
+      currentInteractions: [],
+    },
+    savedImages: [],
+    ref: ref,
+    measurement: {},
+    marker: {},
+    mapMarker: {},
+  };
 }

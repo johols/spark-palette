@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Map } from '../../components/Map';
+import  MapContainer from '../../components/Map/MapContainer';
 class MapPage extends Component {
   render() {
     return (
       <div className="map-page">
-        <Map /> 
+        <MapContainer /> 
       </div>
     );
   }

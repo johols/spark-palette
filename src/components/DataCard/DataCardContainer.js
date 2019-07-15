@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as statisticsActions from '../../actions/statisticsActions';
-import DataCard from './DataCard';
+import { DataCard } from './DataCard';
 
 export class DataCardContainer extends Component {
   // static propTypes = {

@@ -7,7 +7,7 @@ import { linkTo } from '@storybook/addon-links';
 import { Button, Welcome } from '@storybook/react/demo';
 import { SearchField } from '../components/SearchField';
 import { Hero } from '../components/Hero';
-import { DataCard } from '../components/DataCard';
+import { DataCard } from '../components/DataCard/DataCard';
 
 import StoryRouter from 'storybook-react-router';
 
