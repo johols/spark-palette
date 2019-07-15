@@ -20,7 +20,7 @@ export default function reducer(state = initialState, action = {}) {
 
   switch (action.type) {
     case INIT_MAP:
-      newState.map = newMap(action.mapId, action.ref);
+      newState.map = newMap(action.mapId, action.ref, action.center, action.zoom);
       return newState;
     
     case CENTER_CHANGED:
@@ -47,10 +47,13 @@ export default function reducer(state = initialState, action = {}) {
   }
 }  
 
-function newMap(id, ref) {
-  console.log('init map fkn, ref:', ref);
+function newMap(id, ref, center, zoom) {
   const stKilLonLat = [17.391787, 59.881078];
   const stKilWebMercator = fromLonLat(stKilLonLat);
+  console.log('stKilWebMercator', stKilWebMercator);
+  const pos = center ? [center.x, center.y] : stKilWebMercator;
+
+  const level = zoom ? zoom : 6;
   const layer = new layer_Tile({source: new OSM()});
   
   const map = new Map({
@@ -59,8 +62,9 @@ function newMap(id, ref) {
       // extent: MAP_EXTENT,
       // projection: projection,
       // center: [564931, 6607899],
-      center: stKilWebMercator,
-      zoom: 6,
+      center: pos,
+      // center: stKilWebMercator,
+      zoom: level,
       // resolutions: MAP_RESOLUTIONS,
     }),
   });
