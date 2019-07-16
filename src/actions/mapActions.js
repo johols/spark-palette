@@ -1,6 +1,10 @@
 export const INIT_MAP = 'INIT_MAP';
 export const CENTER_CHANGED = 'CENTER_CHANGED';
+export const ADD_VECTOR_LAYER = 'ADD_VECTOR_LAYER';
+export const ADD_FEATURES_TO_VECTOR_LAYER = 'ADD_FEATURES_TO_VECTOR_LAYER';
+export const DETECT_FEATURES_AT_PIXEL = 'DETECT_FEATURES_AT_PIXEL';
 export const START_CENTER = {};
+
 
 function initMap(mapId, ref, center, zoom) {
   return {
@@ -10,6 +14,22 @@ function initMap(mapId, ref, center, zoom) {
     center,
     zoom,
   };
+}
+export function addVectorLayer(mapId, layerId){
+  return {
+    type: ADD_VECTOR_LAYER,
+    mapId,
+    layerId,
+  }
+}
+
+export function addFeaturesToLayer(mapId, vectorLayerId, features){
+  return {
+    type: ADD_FEATURES_TO_VECTOR_LAYER,
+    mapId,
+    vectorLayerId,
+    features
+  }
 }
 
 export function createMap(mapId, ref, mapSettings) {
@@ -31,6 +51,9 @@ export function createMap(mapId, ref, mapSettings) {
       const center = view.getCenter();
       const zoom = view.getZoom();
       dispatch(centerChanged(mapData.id, mapData, { x: center[0], y: center[1] }, zoom));
+    });
+    mapData.map.on('click', e => {
+      dispatch(detectFeaturesAtPixel(mapData.id, e.pixel));
     });
     
     // if (state.map.map === undefined) {
@@ -61,6 +84,13 @@ export function centerChanged(mapId, mapData, center, zoom) {
   };
 }
 
+export function detectFeaturesAtPixel(mapId, pixel){
+  return {
+    type: DETECT_FEATURES_AT_PIXEL,
+    mapId,
+    pixel,
+  }
+}
 
 
 // export function centerChanged(coords) {

@@ -3,7 +3,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import PrimaryHeader from './PrimaryHeader';
 import PrimaryFooter from './PrimaryFooter';
 import HomePage from '../pages/HomePage';
-import MapPage from '../pages/MapPage';
+import MapPageContainer from '../pages/MapPage';
 import AboutPage from '../pages/AboutPage';
 // import ContactPage from '../pages/ContactPage';
 
@@ -16,7 +16,7 @@ class PrimaryLayout extends Component {
           <Switch>
             <Route path="/" exact component={HomePage} />
             <Route path="/home" component={HomePage} />
-            <Route path="/map" component={MapPage} />
+            <Route path="/map" component={MapPageContainer} />
             <Route path="/about" component={AboutPage} />
             {/* <Route path="/contact" component={ContactPage} /> */}
             <Redirect to="/" />

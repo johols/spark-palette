@@ -1,3 +1,3 @@
-import MapPage from './MapPage';
+import MapPageContainer from './MapPageContainer';
 
-export default MapPage;
+export default MapPageContainer;

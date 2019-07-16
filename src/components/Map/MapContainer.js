@@ -7,19 +7,19 @@ import * as mapActions from '../../actions/mapActions';
 import 'ol/ol.css';
 
 // OBS! när komponenten används (i.e MapPage) -> kolla att man använder RÄTT import (dvs default utan måsvingar som är connected)
+// TODO: behövs ref i detta fall?
 export class MapContainer extends Component {
-  // static propTypes = {
-  //   prop: PropTypes
-  // }
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+  }
 
   componentDidMount() {
-    console.log('mapContainer did mount');
-    this.props.actions.createMap('map','map'); 
+    this.props.actions.createMap(this.props.id, 'mapid'); 
   }
 
   render() {
     return (
-      <div ref="map" id="map">
+      <div ref="mapid" id={ this.props.id }>
         {this.props.children}
       </div>
     )

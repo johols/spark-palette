@@ -4,8 +4,20 @@ import View from 'ol/View';
 // import { MAP_EXTENT, MAP_RESOLUTIONS } from './mapInitializationConstants';
 import layer_Tile from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
+import Collection from 'ol/Collection';
+import layer_Vector from 'ol/layer/Vector';
+import source_Vector from 'ol/source/Vector';
+import geom_Point from 'ol/geom/Point';
+import Feature from 'ol/Feature';
+import style_Style from 'ol/style/Style';
+import style_Icon from 'ol/style/Icon';
 import { get as getProjection, fromLonLat } from 'ol/proj';
-import { INIT_MAP, CENTER_CHANGED } from '../actions/mapActions';
+import icon_position from '../images/dot.png';
+import { INIT_MAP, 
+  CENTER_CHANGED, 
+  ADD_VECTOR_LAYER, 
+  ADD_FEATURES_TO_VECTOR_LAYER, 
+  DETECT_FEATURES_AT_PIXEL } from '../actions/mapActions';
 
 const initialState = {
   maps: {},
@@ -30,9 +42,65 @@ export default function reducer(state = initialState, action = {}) {
       }
       return newState;
 
-    // case vectorLayerConstants.ADD_VECTOR_LAYER:
-    //   doAddVectorLayer(mapData, newMapData, action.layerId);
-    //   return newState;
+    case DETECT_FEATURES_AT_PIXEL:
+      if(mapData){
+        console.log('reducer - pixel at:', action.pixel);
+      }
+      return newState;
+
+    case ADD_VECTOR_LAYER:
+      // doAddVectorLayer(mapData, newMapData, action.layerId);
+      if (mapData && !mapData.vectorLayers[action.layerId]) {
+        const features = new Collection();
+        const vectorLayer = new layer_Vector({
+          source: new source_Vector({
+            features,
+          }),
+          style: feature => {
+            // return getLayerStyles(feature);
+          },
+        });
+        const layerData = {
+          layer: vectorLayer,
+          features,
+          style: {
+            strokeColor: '#ff3399',
+            fillColor: 'rgba(255,255,255,0.4)',
+            strokeWidth: 3,
+            pointRadius: 4,
+          },
+        };
+        newMapData.vectorLayers[action.layerId] = layerData;
+        mapData.map.addLayer(vectorLayer);
+      }
+      return newState;
+
+    case ADD_FEATURES_TO_VECTOR_LAYER:
+      console.log('point', action.features);
+      console.log('reducer: ADD_FEATURES_TO_VECTOR_LAYER', mapData.vectorLayers[action.vectorLayerId].features);
+      const feature = new Feature({
+        geometry: new geom_Point(action.features)
+      });
+
+      const featureStyle = new style_Style({
+        image: new style_Icon({
+          src: icon_position,
+          color: '#EB1212',
+          anchor: [0.5, 0.5],
+          scale: 0.5
+        })
+      });
+
+      feature.setStyle(featureStyle);
+
+      // put feature in store ??
+
+      const layer = mapData.vectorLayers[action.vectorLayerId].layer;
+      if(layer){
+        layer.getSource().addFeature(feature);
+      }
+
+      return newState;
     
     // case UPDATE_MARKER:
     //   doUpdateMarker();

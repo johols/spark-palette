@@ -7,7 +7,6 @@ import * as shipsActions from '../../actions/shipsActions';
 class AboutPage extends Component {
   
   componentDidMount() {
-    console.log('Component DID MOUNT!');
     this.props.actions.fetchShips();
  }
 
