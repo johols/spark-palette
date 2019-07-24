@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import backgroundImg from '../images/herobackground.png';
+// import backgroundImg from '../images/herobackground.png';
 // import './App.css';
 import { Container,
   Grid,
@@ -10,7 +10,7 @@ import { Container,
 class PrimaryFooter extends Component {
   render() {
     return (
-      <Segment inverted vertical style={{ padding: '3em 0em',backgroundColor:'green', backgroundImage:  "url(" + backgroundImg + ")" }}>
+      <Segment inverted vertical style={{ padding: '3em 0em',backgroundColor:'#515977' }}>
           <Container>
             <Grid divided inverted stackable>
               <Grid.Row>

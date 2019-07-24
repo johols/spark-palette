@@ -21,6 +21,8 @@ export default function reducer(state={ fetching: false }, action) {
       case 'FETCH_SHIPS_REJECTED': {
         return {...state, fetching: false, error: action.payload }
       }
+      default:
+        return state;
     }
-    return state;
+    // return state;
   }

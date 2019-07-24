@@ -1,6 +1,8 @@
+import { fetchChargerStationsInBbox } from './nobilActions'
 export const INIT_MAP = 'INIT_MAP';
 export const CENTER_CHANGED = 'CENTER_CHANGED';
 export const ADD_VECTOR_LAYER = 'ADD_VECTOR_LAYER';
+export const ADD_VECTOR_LAYER_WITH_STYLE = 'ADD_VECTOR_LAYER_WITH_STYLE';
 export const ADD_FEATURES_TO_VECTOR_LAYER = 'ADD_FEATURES_TO_VECTOR_LAYER';
 export const DETECT_FEATURES_AT_PIXEL = 'DETECT_FEATURES_AT_PIXEL';
 export const START_CENTER = {};
@@ -18,6 +20,13 @@ function initMap(mapId, ref, center, zoom) {
 export function addVectorLayer(mapId, layerId){
   return {
     type: ADD_VECTOR_LAYER,
+    mapId,
+    layerId,
+  }
+}
+export function addVectorLayerWithStyle(mapId, layerId){
+  return {
+    type: ADD_VECTOR_LAYER_WITH_STYLE,
     mapId,
     layerId,
   }
@@ -51,6 +60,7 @@ export function createMap(mapId, ref, mapSettings) {
       const center = view.getCenter();
       const zoom = view.getZoom();
       dispatch(centerChanged(mapData.id, mapData, { x: center[0], y: center[1] }, zoom));
+      dispatch(fetchChargerStationsInBbox(mapData));
     });
     mapData.map.on('click', e => {
       dispatch(detectFeaturesAtPixel(mapData.id, e.pixel));
@@ -73,6 +83,8 @@ export function createMap(mapId, ref, mapSettings) {
     // }
   };
 }
+
+
 
 export function centerChanged(mapId, mapData, center, zoom) {
   return {
