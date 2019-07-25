@@ -3,10 +3,10 @@ export const INIT_MAP = 'INIT_MAP';
 export const CENTER_CHANGED = 'CENTER_CHANGED';
 export const ADD_VECTOR_LAYER = 'ADD_VECTOR_LAYER';
 export const ADD_VECTOR_LAYER_WITH_STYLE = 'ADD_VECTOR_LAYER_WITH_STYLE';
+export const ADD_SINGLE_FEATURE_TO_VECTOR_LAYER = 'ADD_SINGLE_FEATURE_TO_VECTOR_LAYER';
 export const ADD_FEATURES_TO_VECTOR_LAYER = 'ADD_FEATURES_TO_VECTOR_LAYER';
 export const DETECT_FEATURES_AT_PIXEL = 'DETECT_FEATURES_AT_PIXEL';
 export const START_CENTER = {};
-
 
 function initMap(mapId, ref, center, zoom) {
   return {
@@ -29,6 +29,15 @@ export function addVectorLayerWithStyle(mapId, layerId){
     type: ADD_VECTOR_LAYER_WITH_STYLE,
     mapId,
     layerId,
+  }
+}
+
+export function addSingleFeatureToLayer(mapId, vectorLayerId, feature){
+  return {
+    type: ADD_SINGLE_FEATURE_TO_VECTOR_LAYER,
+    mapId,
+    vectorLayerId,
+    feature
   }
 }
 

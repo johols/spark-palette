@@ -16,7 +16,15 @@ class MapPage extends Component {
   componentDidMount(){
     // this.props.addVectorLayer(MAP_ID, FEATURE_LAYER);
     this.props.addVectorLayerWithStyle(MAP_ID, FEATURE_LAYER_WITH_STYLE);
-    this.props.addFeaturesToLayer(MAP_ID, FEATURE_LAYER_WITH_STYLE, featuresToAdd);
+    this.props.addSingleFeatureToLayer(MAP_ID, FEATURE_LAYER_WITH_STYLE, featuresToAdd);
+  }
+
+  componentWillReceiveProps(nextProps){
+    if (this.props !== nextProps) {
+      // console.log('props of MapPage:', nextProps);
+      //Här blir det krasch pga att addFeaturesToLayer inte hanterar arrayer av features... TOFIX!
+      this.props.addFeaturesToLayer(MAP_ID, FEATURE_LAYER_WITH_STYLE, nextProps.chargerstations);
+    }
   }
 
   render() {

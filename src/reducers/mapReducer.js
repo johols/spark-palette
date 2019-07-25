@@ -19,8 +19,10 @@ import { INIT_MAP,
   CENTER_CHANGED, 
   ADD_VECTOR_LAYER, 
   ADD_VECTOR_LAYER_WITH_STYLE, 
+  ADD_SINGLE_FEATURE_TO_VECTOR_LAYER,
   ADD_FEATURES_TO_VECTOR_LAYER, 
   DETECT_FEATURES_AT_PIXEL } from '../actions/mapActions';
+import { convertNOBILtoOL } from '../utils/convertNOBILtoOL';
 
 const initialState = {
   maps: {},
@@ -142,17 +144,36 @@ export default function reducer(state = initialState, action = {}) {
       chargerSource.addFeature(feature2);
       return newState;
 
+    case ADD_SINGLE_FEATURE_TO_VECTOR_LAYER:
+      console.log('point', action.feature);
+      console.log('reducer: ADD_FEATURES_TO_VECTOR_LAYER', mapData.vectorLayers[action.vectorLayerId]);
+      
+      // här behöver vi motsvarande chargerSource att lägga våra features i ...
+      const layerSource = mapData.vectorLayers[action.vectorLayerId].layer.getSource();
+      const singelFeature = new Feature(action.feature);
+      const coord = fromLonLat(action.feature.position);
+      const geom = new geom_Point(coord);
+      singelFeature.setGeometry(geom);
+      layerSource.addFeature(singelFeature);
+      return newState;
+
     case ADD_FEATURES_TO_VECTOR_LAYER:
       console.log('point', action.features);
       console.log('reducer: ADD_FEATURES_TO_VECTOR_LAYER', mapData.vectorLayers[action.vectorLayerId]);
       
       // här behöver vi motsvarande chargerSource att lägga våra features i ...
-      const layerSource = mapData.vectorLayers[action.vectorLayerId].layer.getSource();
-      const singelFeature = new Feature(action.features);
-      const coord = fromLonLat(action.features.position);
-      const geom = new geom_Point(coord);
-      singelFeature.setGeometry(geom);
-      layerSource.addFeature(singelFeature);
+      action.features.forEach((element, index) => {
+        const vectorLayerSource = mapData.vectorLayers[action.vectorLayerId].layer.getSource();
+        const featureToAdd = new Feature(element);
+        
+        const position = convertNOBILtoOL('position', element.csmd.Position);
+        console.log('position: ', position); //TODO:skapa helperfunc getPosition
+        const coord = fromLonLat(position);
+        const geom = new geom_Point(coord);
+        featureToAdd.setGeometry(geom);
+        //TODO: gör massa set(..) för att få med laddstationsdata...
+        vectorLayerSource.addFeature(featureToAdd);
+      })
       return newState;
       
     case ADD_VECTOR_LAYER:

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import * as mapActions from '../../actions/mapActions';
 
-import {addVectorLayer, addVectorLayerWithStyle, addFeaturesToLayer} from '../../actions/mapActions';
+import {addVectorLayer, addVectorLayerWithStyle, addSingleFeatureToLayer, addFeaturesToLayer} from '../../actions/mapActions';
 import MapPage from './MapPage';
 
 export class MapPageContainer extends Component {
@@ -18,11 +18,11 @@ export class MapPageContainer extends Component {
 }
 
 export default connect(
-  state => ({}),
+  state => ({chargerstations: state.nobil.chargerstations}),
   dispatch =>
     bindActionCreators(
       {
-        addVectorLayer, addFeaturesToLayer, addVectorLayerWithStyle
+        addVectorLayer, addSingleFeatureToLayer, addFeaturesToLayer, addVectorLayerWithStyle
       },
       dispatch
     ),
