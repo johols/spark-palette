@@ -25,6 +25,8 @@ export function addVectorLayer(mapId, layerId){
   }
 }
 export function addVectorLayerWithStyle(mapId, layerId){
+  // inga sideeffects allowed in reducer -> fippla med lyssnare här ist. Jmf med createMap
+  // hur man ska sköta stylehanteringen för vectorLayers...
   return {
     type: ADD_VECTOR_LAYER_WITH_STYLE,
     mapId,

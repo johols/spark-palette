@@ -15,6 +15,7 @@ import { get as getProjection, fromLonLat } from 'ol/proj';
 import icon_position from '../images/dot.png';
 // import interaction_Select from 'ol/interaction/Select';
 import Select from 'ol/interaction/Select';
+import { click } from 'ol/events/condition';
 import { INIT_MAP, 
   CENTER_CHANGED, 
   ADD_VECTOR_LAYER, 
@@ -48,21 +49,7 @@ export default function reducer(state = initialState, action = {}) {
       return newState;
 
     case DETECT_FEATURES_AT_PIXEL:
-      // if(mapData){
-      //   const selectInteraction = new interaction_Select({
-      //     layers: [mapData.vectorLayers['Featurelayer'].layer],
-      //     // style: [selectEuropa]
-      //   });
-
-      //   mapData.map.getInteractions().extend([selectInteraction]);
-
-      //   console.log('reducer - pixel at mapdata:', mapData);
-      //   console.log('reducer - pixel at:', action.pixel);
-        
-      //   mapData.map.forEachFeatureAtPixel(action.pixel, function(feature, layer){
-      //     console.log('jool');
-      //   });
-      // }
+      
       return newState;
 
     case ADD_VECTOR_LAYER_WITH_STYLE:
@@ -103,6 +90,7 @@ export default function reducer(state = initialState, action = {}) {
       mapData.map.addLayer(chargerLayer);
 
       const select = new Select({
+        condition: click,
         layers: [chargerLayer],
         style: selectedStyle
       });
@@ -146,7 +134,7 @@ export default function reducer(state = initialState, action = {}) {
 
     case ADD_SINGLE_FEATURE_TO_VECTOR_LAYER:
       console.log('point', action.feature);
-      console.log('reducer: ADD_FEATURES_TO_VECTOR_LAYER', mapData.vectorLayers[action.vectorLayerId]);
+      console.log('reducer: ADD_SINGLE_FEATURE_TO_VECTOR_LAYER', mapData.vectorLayers[action.vectorLayerId]);
       
       // här behöver vi motsvarande chargerSource att lägga våra features i ...
       const layerSource = mapData.vectorLayers[action.vectorLayerId].layer.getSource();
@@ -160,10 +148,11 @@ export default function reducer(state = initialState, action = {}) {
     case ADD_FEATURES_TO_VECTOR_LAYER:
       console.log('point', action.features);
       console.log('reducer: ADD_FEATURES_TO_VECTOR_LAYER', mapData.vectorLayers[action.vectorLayerId]);
-      
+      const vectorLayerSource = mapData.vectorLayers[action.vectorLayerId].layer.getSource();
+      vectorLayerSource.clear();
       // här behöver vi motsvarande chargerSource att lägga våra features i ...
       action.features.forEach((element, index) => {
-        const vectorLayerSource = mapData.vectorLayers[action.vectorLayerId].layer.getSource();
+        // const vectorLayerSource = mapData.vectorLayers[action.vectorLayerId].layer.getSource();
         const featureToAdd = new Feature(element);
         
         const position = convertNOBILtoOL('position', element.csmd.Position);
@@ -171,105 +160,14 @@ export default function reducer(state = initialState, action = {}) {
         const coord = fromLonLat(position);
         const geom = new geom_Point(coord);
         featureToAdd.setGeometry(geom);
-        //TODO: gör massa set(..) för att få med laddstationsdata...
+        //TODO: set url för att få stylen att ändras...
+        featureToAdd.set('url', 'www.cooljool.se' + element.csmd.id);
         vectorLayerSource.addFeature(featureToAdd);
       })
       return newState;
       
     case ADD_VECTOR_LAYER:
-      // doAddVectorLayer(mapData, newMapData, action.layerId);
-      if (mapData && !mapData.vectorLayers[action.layerId]) {
-
-        const cache = {};
-
-        function photoStyle(feature, scale){
-          const url = feature.get('url');
-          const key = scale + url;
-          if(!cache[key]){
-            cache[key] = new style_Style({
-              image: new style_Icon({
-                src: icon_position,
-                color: '#FFF',
-                anchor: [0.5, 0.5],
-                scale: scale
-              })
-            })
-          }
-          return cache[key];
-        }
-
-        function flickrStyle(feature){
-          return [photoStyle(feature, 0.5)];
-        }
-        function selectedStyle(feature){
-          return [photoStyle(feature, 0.3)];
-        }
-
-        const features = new Collection();
-        const vectorLayer = new layer_Vector({
-          id: 'europa',
-          source: new source_Vector({
-            features,
-          }),
-          style: feature => {
-            // return getLayerStyles(feature);
-          },
-        });
-        const layerData = {
-          layer: vectorLayer,
-          features,
-          style: {
-            strokeColor: '#ff3399',
-            fillColor: 'rgba(255,255,255,0.4)',
-            strokeWidth: 3,
-            pointRadius: 4,
-          },
-        };
-        newMapData.vectorLayers[action.layerId] = layerData;
-        mapData.map.addLayer(vectorLayer);
-
-        //lägg till addInteraction här?
-        const select = new Select({
-          layers: [vectorLayer],
-          style: selectedStyle,
-          // style: feature => {
-          //   // return getLayerStyles(feature);
-          // },
-        });
-        mapData.map.addInteraction(select);
-
-        const selectedFeatures = select.getFeatures();
-        selectedFeatures.on('add', e => {
-          console.log('selectedFeatures on add...', e); //eller kan man ändra stilen här?
-        });
-
-        selectedFeatures.on('remove', e => {
-          console.log('selectedFeatures on remove...');
-        });
-
-        // TODO: punkten har nu stilen... låt istället lagret ha stilen. Då kan man ändra stilen
-        // och därmed ändra storl/färg när man klickar på ikonen...
-        //testa lägg till features
-        const item = {'title': 'jool', 'link': 'cool'};
-        const feature = new Feature(item);
-        feature.set('url', 'www.cooljool.se');
-        const stKilLonLat = [17.391787, 59.881078];
-        const coordinate = fromLonLat(stKilLonLat);
-        const geometry = new geom_Point(coordinate); 
-        const featureStyle = new style_Style({
-          image: new style_Icon({
-            src: icon_position,
-            color: '#FFF',
-            anchor: [0.5, 0.5],
-            scale: 0.9
-          })
-        });
-
-        feature.setStyle(featureStyle);
-        feature.setGeometry(geometry);
-        vectorLayer.getSource().addFeature(feature);
-
-      }
+      
       return newState;
     
     // case UPDATE_MARKER:
