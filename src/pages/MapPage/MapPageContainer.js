@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import * as mapActions from '../../actions/mapActions';
 
-import {addVectorLayer, addVectorLayerWithStyle, addSingleFeatureToLayer, addFeaturesToLayer} from '../../actions/mapActions';
+import {addVectorLayer, createVectorLayer, addVectorLayerWithStyle, addSingleFeatureToLayer, addFeaturesToLayer} from '../../actions/mapActions';
 import MapPage from './MapPage';
 
 export class MapPageContainer extends Component {
@@ -22,7 +22,7 @@ export default connect(
   dispatch =>
     bindActionCreators(
       {
-        addVectorLayer, addSingleFeatureToLayer, addFeaturesToLayer, addVectorLayerWithStyle
+        addVectorLayer, addSingleFeatureToLayer, addFeaturesToLayer, addVectorLayerWithStyle, createVectorLayer
       },
       dispatch
     ),

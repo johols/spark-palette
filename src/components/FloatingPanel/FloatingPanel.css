@@ -1,0 +1,28 @@
+#panel-wrapper { 
+  position: relative; 
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+#floating-panel {
+  position: absolute;
+  width: 265px;
+  top: 55px;
+  left: 5px;
+  z-index: 5000;
+  background-color: #FFFFFF;
+  border: 1px solid rgb(66, 72, 79);
+  border-radius: 5px;
+  max-width: 230px;
+
+}
+
+#floating-panel .title {
+  padding: 5px;
+  background-color: rgb(81, 89, 119, 0.9);
+  color: #FFFFFF;
+
+}
+
+#floating-panel .info {
+  padding: 5px;
+}

@@ -14,9 +14,9 @@ const featuresToAdd = {'position': alsikeLonLat, 'title': 'Alsike', 'url': 'www.
 class MapPage extends Component {
 
   componentDidMount(){
-    // this.props.addVectorLayer(MAP_ID, FEATURE_LAYER);
-    this.props.addVectorLayerWithStyle(MAP_ID, FEATURE_LAYER_WITH_STYLE);
-    this.props.addSingleFeatureToLayer(MAP_ID, FEATURE_LAYER_WITH_STYLE, featuresToAdd);
+    // this.props.addVectorLayerWithStyle(MAP_ID, FEATURE_LAYER_WITH_STYLE);
+    this.props.createVectorLayer(MAP_ID, FEATURE_LAYER_WITH_STYLE);
+    // this.props.addSingleFeatureToLayer(MAP_ID, FEATURE_LAYER_WITH_STYLE, featuresToAdd);
   }
 
   componentWillReceiveProps(nextProps){

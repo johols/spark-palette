@@ -8,6 +8,7 @@ import { Button, Welcome } from '@storybook/react/demo';
 import { SearchField } from '../components/SearchField';
 import { Hero } from '../components/Hero';
 import { DataCard } from '../components/DataCard/DataCard';
+import { FloatingPanel } from '../components/FloatingPanel';
 
 import StoryRouter from 'storybook-react-router';
 
@@ -43,3 +44,5 @@ storiesOf('Hero segment', module)
   .add('default', () => <DataCard />)
   .add('with title', () => <DataCard title='my title' />)
   .add('with data', () => <DataCard title='my title' stats={ defaultStats }/>);
+
+storiesOf('Floating panel', module).add('default', () => <FloatingPanel />);

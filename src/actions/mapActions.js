@@ -1,4 +1,12 @@
-import { fetchChargerStationsInBbox } from './nobilActions'
+import { fetchChargerStationsInBbox, fetchStationStatus } from './nobilActions'
+
+import Select from 'ol/interaction/Select';
+import { click } from 'ol/events/condition';
+import icon_position from '../images/dot.png';
+import style_Style from 'ol/style/Style';
+import style_Icon from 'ol/style/Icon';
+import { selectedStyle } from '../olHelpers/layerStyles';
+
 export const INIT_MAP = 'INIT_MAP';
 export const CENTER_CHANGED = 'CENTER_CHANGED';
 export const ADD_VECTOR_LAYER = 'ADD_VECTOR_LAYER';
@@ -6,6 +14,7 @@ export const ADD_VECTOR_LAYER_WITH_STYLE = 'ADD_VECTOR_LAYER_WITH_STYLE';
 export const ADD_SINGLE_FEATURE_TO_VECTOR_LAYER = 'ADD_SINGLE_FEATURE_TO_VECTOR_LAYER';
 export const ADD_FEATURES_TO_VECTOR_LAYER = 'ADD_FEATURES_TO_VECTOR_LAYER';
 export const DETECT_FEATURES_AT_PIXEL = 'DETECT_FEATURES_AT_PIXEL';
+export const TEST_ACTION = 'TEST_ACTION';
 export const START_CENTER = {};
 
 function initMap(mapId, ref, center, zoom) {
@@ -52,6 +61,21 @@ export function addFeaturesToLayer(mapId, vectorLayerId, features){
   }
 }
 
+export function testAction(joolstring){
+  return {
+    type: TEST_ACTION,
+    joolstring
+  }
+}
+
+export function createVectorLayer(mapId, layerId){
+  return (dispatch, getState) => {
+    console.log('createVectorLayer ', layerId);
+    dispatch(testAction('joolstr'));
+    dispatch(addVectorLayerWithStyle(mapId, layerId));  
+  };
+}
+
 export function createMap(mapId, ref, mapSettings) {
   return (dispatch, getState) => {
     let state = getState();
@@ -74,7 +98,7 @@ export function createMap(mapId, ref, mapSettings) {
       dispatch(fetchChargerStationsInBbox(mapData));
     });
     mapData.map.on('click', e => {
-      dispatch(detectFeaturesAtPixel(mapData.id, e.pixel));
+      dispatch(detectFeaturesAtPixel(mapData.id, mapData, e.pixel));
     });
     
     // if (state.map.map === undefined) {
@@ -107,11 +131,21 @@ export function centerChanged(mapId, mapData, center, zoom) {
   };
 }
 
-export function detectFeaturesAtPixel(mapId, pixel){
-  return {
-    type: DETECT_FEATURES_AT_PIXEL,
-    mapId,
-    pixel,
+export function detectFeaturesAtPixel(mapId, mapData, pixel){
+
+  return (dispatch) => {
+    const features = mapData.map.getFeaturesAtPixel(pixel);
+    if(features){
+      console.log('detectFeaturesAtPixel', features[0].get('csmd'));
+      const stationAttributes = features[0].get('csmd');
+      //TODO: ska man spara hela features-obj, eller räcker det med stationAttributes?
+      dispatch({
+        type: DETECT_FEATURES_AT_PIXEL,
+        pixel,
+        features
+      });
+      dispatch(fetchStationStatus(stationAttributes.International_id));
+    }
   }
 }
 

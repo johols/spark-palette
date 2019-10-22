@@ -22,8 +22,9 @@ import { INIT_MAP,
   ADD_VECTOR_LAYER_WITH_STYLE, 
   ADD_SINGLE_FEATURE_TO_VECTOR_LAYER,
   ADD_FEATURES_TO_VECTOR_LAYER, 
-  DETECT_FEATURES_AT_PIXEL } from '../actions/mapActions';
+  DETECT_FEATURES_AT_PIXEL, TEST_ACTION } from '../actions/mapActions';
 import { convertNOBILtoOL } from '../utils/convertNOBILtoOL';
+import { chargerStyle, selectedStyle } from '../olHelpers/layerStyles';
 
 const initialState = {
   maps: {},
@@ -49,38 +50,48 @@ export default function reducer(state = initialState, action = {}) {
       return newState;
 
     case DETECT_FEATURES_AT_PIXEL:
-      
+      console.log('DETECT_FEATURES_AT_PIXEL - pix', action.pixel);
+      console.log('DETECT_FEATURES_AT_PIXEL', action.features);
+      if(mapData){
+        newMapData.featuresDetected = {
+          'atPixel': action.pixel,
+          'features': action.features }
+      }
+      return newState;
+
+    case TEST_ACTION:
+      console.log('in reducer for TEST_ACTION', action);
       return newState;
 
     case ADD_VECTOR_LAYER_WITH_STYLE:
-      
+      console.log('ADD_VECTOR_LAYER_WITH_STYLE!');
       const chargerSource = new source_Vector();
 
-      const cache = {};
+      // const cache = {};
 
-      function markerStyle(feature, scale){
-        //nästa steg: kolla url , key... if-satsen spärrar ändring av style?
-        const url = feature.get('url');
-        const key = scale + url;
-        if(!cache[key]){
-          cache[key] = new style_Style({
-            image: new style_Icon({
-              src: icon_position,
-              color: '#FFF',
-              anchor: [0.5, 0.5],
-              scale: scale
-            })
-          });
-        }
-        return cache[key];
-      }
+      // function markerStyle(feature, scale){
+      //   //nästa steg: kolla url , key... if-satsen spärrar ändring av style?
+      //   const url = feature.get('url');
+      //   const key = scale + url;
+      //   if(!cache[key]){
+      //     cache[key] = new style_Style({
+      //       image: new style_Icon({
+      //         src: icon_position,
+      //         color: '#FFF',
+      //         anchor: [0.5, 0.5],
+      //         scale: scale
+      //       })
+      //     });
+      //   }
+      //   return cache[key];
+      // }
 
-      function chargerStyle(feature){
-        return [markerStyle(feature, 1.1)];
-      }
-      function selectedStyle(feature){
-        return [markerStyle(feature, 0.3)];
-      }
+      // function chargerStyle(feature){
+      //   return [markerStyle(feature, 1.1)];
+      // }
+      // function selectedStyle(feature){
+      //   return [markerStyle(feature, 0.3)];
+      // }
       const chargerLayer = new layer_Vector({
         source: chargerSource,
         style: chargerStyle
@@ -96,14 +107,14 @@ export default function reducer(state = initialState, action = {}) {
       });
       mapData.map.addInteraction(select);
 
-      const selectedFeatures = select.getFeatures();
-      selectedFeatures.on('add', e => {
-        console.log('selectedFeatures on add...', e); //eller kan man ändra stilen här?
-      });
+      // const selectedFeatures = select.getFeatures();
+      // selectedFeatures.on('add', e => {
+      //   console.log('selectedFeatures on add...', e); //eller kan man ändra stilen här?
+      // });
 
-      selectedFeatures.on('remove', e => {
-        console.log('selectedFeatures on remove...');
-      });
+      // selectedFeatures.on('remove', e => {
+      //   console.log('selectedFeatures on remove...');
+      // });
 
       const layerData = {
         layer: chargerLayer,
@@ -146,7 +157,7 @@ export default function reducer(state = initialState, action = {}) {
       return newState;
 
     case ADD_FEATURES_TO_VECTOR_LAYER:
-      console.log('point', action.features);
+      console.log('action', action);
       console.log('reducer: ADD_FEATURES_TO_VECTOR_LAYER', mapData.vectorLayers[action.vectorLayerId]);
       const vectorLayerSource = mapData.vectorLayers[action.vectorLayerId].layer.getSource();
       vectorLayerSource.clear();
